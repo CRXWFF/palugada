@@ -49,6 +49,10 @@
 	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Aplikasi membutuhkan akses lokasi untuk menampilkan informasi cuaca lokal Anda.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Aplikasi membutuhkan akses lokasi untuk menampilkan informasi cuaca lokal Anda.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
