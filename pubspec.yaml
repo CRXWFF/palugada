@@ -15,6 +15,8 @@ dependencies:
   get: ^4.7.3
   flutter_dotenv: ^6.0.0
   skeletonizer: ^2.1.2
+  flutter_launcher_icons: ^0.14.4
+  shared_preferences: ^2.5.4
 
 dev_dependencies:
   flutter_test:
@@ -27,6 +29,7 @@ flutter:
 
   assets:
     - assets/.env
+    - assets/logonya.png
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
