@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../models/weather_model.dart';
 import '../services/weather_service.dart';
 import 'package:intl/intl.dart';
@@ -107,176 +108,176 @@ class _WeatherWidgetState extends State<WeatherWidget> {
             colors: [Colors.grey[100]!, Colors.grey[200]!],
           ),
         ),
-        child: _isLoading
-            ? const Center(
-                child: CircularProgressIndicator(color: Colors.black87),
-              )
-            : _error != null
-            ? Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.error_outline, size: 48, color: Colors.grey[600]),
-                  const SizedBox(height: 12),
-                  Text(
-                    _error!,
-                    style: TextStyle(color: Colors.grey[700], fontSize: 14),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: _loadWeatherByLocation,
-                        icon: const Icon(Icons.refresh, size: 18),
-                        label: const Text('Coba Lagi'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black87,
-                          foregroundColor: Colors.white,
+        child: Skeletonizer(
+          enabled: _isLoading,
+          child: _error != null && !_isLoading
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 48,
+                      color: Colors.grey[600],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      _error!,
+                      style: TextStyle(color: Colors.grey[700], fontSize: 14),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: _loadWeatherByLocation,
+                          icon: const Icon(Icons.refresh, size: 18),
+                          label: const Text('Coba Lagi'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black87,
+                            foregroundColor: Colors.white,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      ElevatedButton.icon(
-                        onPressed: _showCityDialog,
-                        icon: const Icon(Icons.location_city, size: 18),
-                        label: const Text('Pilih Kota'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey[300],
-                          foregroundColor: Colors.black87,
+                        const SizedBox(width: 12),
+                        ElevatedButton.icon(
+                          onPressed: _showCityDialog,
+                          icon: const Icon(Icons.location_city, size: 18),
+                          label: const Text('Pilih Kota'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey[300],
+                            foregroundColor: Colors.black87,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            : _weather != null
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.location_on,
-                            color: Colors.black87,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            _weather!.cityName,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.location_city, size: 20),
-                            onPressed: _showCityDialog,
-                            color: Colors.black87,
-                            tooltip: 'Pilih lokasi manual',
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.refresh, size: 20),
-                            onPressed: _loadWeatherByLocation,
-                            color: Colors.black87,
-                            tooltip: 'Refresh',
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      ],
+                    ),
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${_weather!.temperature.round()}',
-                                  style: const TextStyle(
-                                    fontSize: 56,
-                                    fontWeight: FontWeight.w300,
-                                    color: Colors.black87,
-                                    height: 1,
-                                  ),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(top: 8),
-                                  child: Text(
-                                    '°C',
-                                    style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            const Icon(
+                              Icons.location_on,
+                              color: Colors.black87,
+                              size: 20,
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(width: 4),
                             Text(
-                              _weather!.description.toUpperCase(),
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[700],
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 1,
+                              _weather?.cityName ?? 'Loading City',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                        Row(
                           children: [
-                            _buildWeatherDetail(
-                              Icons.thermostat,
-                              'Terasa',
-                              '${_weather!.feelsLike.round()}°C',
+                            IconButton(
+                              icon: const Icon(Icons.location_city, size: 20),
+                              onPressed: _showCityDialog,
+                              color: Colors.black87,
+                              tooltip: 'Pilih lokasi manual',
                             ),
-                            const SizedBox(height: 8),
-                            _buildWeatherDetail(
-                              Icons.water_drop,
-                              'Kelembaban',
-                              '${_weather!.humidity}%',
-                            ),
-                            const SizedBox(height: 8),
-                            _buildWeatherDetail(
-                              Icons.air,
-                              'Angin',
-                              '${_weather!.windSpeed.toStringAsFixed(1)} m/s',
+                            IconButton(
+                              icon: const Icon(Icons.refresh, size: 20),
+                              onPressed: _loadWeatherByLocation,
+                              color: Colors.black87,
+                              tooltip: 'Refresh',
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    DateFormat(
-                      'EEEE, d MMMM yyyy HH:mm',
-                      'id_ID',
-                    ).format(_weather!.dateTime),
-                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                  ),
-                ],
-              )
-            : Container(),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                textBaseline: TextBaseline.alphabetic,
+                                children: [
+                                  Text(
+                                    '${_weather?.temperature.round() ?? 25}',
+                                    style: const TextStyle(
+                                      fontSize: 56,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.black87,
+                                      height: 1,
+                                    ),
+                                  ),
+                                  const Text(
+                                    '°C',
+                                    style: TextStyle(
+                                      fontSize: 56,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                _weather?.description.toUpperCase() ??
+                                    'LOADING WEATHER',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey[700],
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 1,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              _buildWeatherDetail(
+                                Icons.thermostat,
+                                'Terasa',
+                                '${_weather?.feelsLike.round() ?? 24}°C',
+                              ),
+                              const SizedBox(height: 8),
+                              _buildWeatherDetail(
+                                Icons.water_drop,
+                                'Kelembaban',
+                                '${_weather?.humidity ?? 65}%',
+                              ),
+                              const SizedBox(height: 8),
+                              _buildWeatherDetail(
+                                Icons.air,
+                                'Angin',
+                                '${_weather?.windSpeed.toStringAsFixed(1) ?? '3.5'} m/s',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      DateFormat(
+                        'EEEE, d MMMM yyyy HH:mm',
+                        'id_ID',
+                      ).format(_weather?.dateTime ?? DateTime.now()),
+                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                    ),
+                  ],
+                ),
+        ),
       ),
     );
   }

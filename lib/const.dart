@@ -12,3 +12,7 @@ const String forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast';
 // StockData API (Saham)
 final stockApiToken = dotenv.env['STOCKDATA_API_TOKEN'];
 const String stockUrl = 'https://api.stockdata.org/v1/data/quote';
+
+// ExchangeRate API (Kurs Mata Uang)
+final exchangeRateApiToken = dotenv.env['EXCHANGERATE_API_TOKEN'];
+const String exchangeRateUrl = 'https://v6.exchangerate-api.com/v6/';

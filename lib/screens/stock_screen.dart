@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../models/stock_model.dart';
 import '../services/stock_service.dart';
 import 'package:intl/intl.dart';
@@ -68,6 +69,19 @@ class _StockScreenState extends State<StockScreen> {
     });
   }
 
+  StockModel _getDummyStock() {
+    return StockModel(
+      ticker: 'LOAD',
+      name: 'Loading Stock Company Name Placeholder',
+      price: 150.50,
+      change: 2.50,
+      changePercent: 1.69,
+      volume: 1000000,
+      dayHigh: 152.00,
+      dayLow: 148.00,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +90,7 @@ class _StockScreenState extends State<StockScreen> {
         backgroundColor: Colors.black87,
         elevation: 0,
         title: const Text(
-          'Informasi Saham',
+          'Informasi Saham US',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -180,52 +194,53 @@ class _StockScreenState extends State<StockScreen> {
 
           // Stock List
           Expanded(
-            child: _isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(color: Colors.black87),
-                  )
-                : _stocks.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.show_chart,
-                          size: 64,
-                          color: Colors.grey[400],
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Tidak ada data saham',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[600],
+            child: Skeletonizer(
+              enabled: _isLoading,
+              child: _stocks.isEmpty && !_isLoading
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.show_chart,
+                            size: 64,
+                            color: Colors.grey[400],
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        ElevatedButton(
-                          onPressed: _loadStocks,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black87,
-                            foregroundColor: Colors.white,
+                          const SizedBox(height: 16),
+                          Text(
+                            'Tidak ada data saham',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey[600],
+                            ),
                           ),
-                          child: const Text('Muat Ulang'),
-                        ),
-                      ],
+                          const SizedBox(height: 8),
+                          ElevatedButton(
+                            onPressed: _loadStocks,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black87,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Text('Muat Ulang'),
+                          ),
+                        ],
+                      ),
+                    )
+                  : RefreshIndicator(
+                      onRefresh: _loadStocks,
+                      color: Colors.black87,
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(16),
+                        itemCount: _isLoading ? 5 : _stocks.length,
+                        itemBuilder: (context, index) {
+                          final stock = _isLoading
+                              ? _getDummyStock()
+                              : _stocks[index];
+                          return _buildStockCard(stock);
+                        },
+                      ),
                     ),
-                  )
-                : RefreshIndicator(
-                    onRefresh: _loadStocks,
-                    color: Colors.black87,
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: _stocks.length,
-                      itemBuilder: (context, index) {
-                        final stock = _stocks[index];
-                        return _buildStockCard(stock);
-                      },
-                    ),
-                  ),
+            ),
           ),
         ],
       ),

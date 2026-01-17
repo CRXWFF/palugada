@@ -18,19 +18,34 @@ class NewsModel {
   });
 
   factory NewsModel.fromJson(Map<String, dynamic> json) {
-    return NewsModel(
-      title: json['title'] ?? 'No Title',
-      description: json['description'] ?? 'No Description',
-      url: json['url'] ?? '',
-      imageUrl: json['image'] ?? '',
-      author: json['author'] ?? 'Unknown',
-      publishedAt: DateTime.parse(
-        json['published'] ?? DateTime.now().toIso8601String(),
-      ),
-      category:
-          (json['category'] is List && (json['category'] as List).isNotEmpty)
-          ? json['category'][0]
-          : 'General',
-    );
+    try {
+      return NewsModel(
+        title: json['title']?.toString() ?? 'No Title',
+        description: json['description']?.toString() ?? 'No Description',
+        url: json['url']?.toString() ?? '',
+        imageUrl: json['image']?.toString() ?? '',
+        author: json['author']?.toString() ?? 'Unknown',
+        publishedAt: json['published'] != null
+            ? DateTime.parse(json['published'])
+            : DateTime.now(),
+        category:
+            (json['category'] is List && (json['category'] as List).isNotEmpty)
+            ? (json['category'][0]?.toString() ?? 'General')
+            : (json['category']?.toString() ?? 'General'),
+      );
+    } catch (e) {
+      print('Error parsing news article: $e');
+      print('JSON data: $json');
+      // Return default values if parsing fails
+      return NewsModel(
+        title: 'Error Loading Title',
+        description: 'Error Loading Description',
+        url: '',
+        imageUrl: '',
+        author: 'Unknown',
+        publishedAt: DateTime.now(),
+        category: 'General',
+      );
+    }
   }
 }

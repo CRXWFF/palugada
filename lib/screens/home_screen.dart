@@ -3,6 +3,7 @@ import '../widgets/weather_widget.dart';
 import '../widgets/menu_card.dart';
 import 'news_screen.dart';
 import 'stock_screen.dart';
+import 'currency_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -76,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 MenuCard(
                   icon: Icons.show_chart,
                   title: 'Saham',
-                  subtitle: 'Informasi saham',
+                  subtitle: 'Informasi saham US',
                   onTap: () {
                     Navigator.push(
                       context,
@@ -87,15 +88,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 MenuCard(
-                  icon: Icons.cloud,
-                  title: 'Cuaca',
-                  subtitle: 'Detail ramalan',
+                  icon: Icons.currency_exchange,
+                  title: 'Kurs Mata Uang',
+                  subtitle: 'Konversi valuta',
                   onTap: () {
-                    // Could add detailed weather forecast screen
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Fitur detail cuaca akan segera hadir'),
-                        backgroundColor: Colors.black87,
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CurrencyScreen(),
                       ),
                     );
                   },
