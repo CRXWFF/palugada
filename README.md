@@ -176,3 +176,7 @@ Project ini dibuat untuk keperluan pembelajaran dan pengembangan personal.
 - Integrasi dengan external APIs
 - UI/UX design dengan monochrome theme
 - Basic error handling dan loading states
+
+# Gambar
+
+https://imgcdn.dev/i/Y1QtJO
