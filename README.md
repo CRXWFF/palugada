@@ -179,4 +179,4 @@ Project ini dibuat untuk keperluan pembelajaran dan pengembangan personal.
 
 # Gambar
 
-https://imgcdn.dev/i/Y1QtJO
+[https://imgcdn.dev/i/Y1QtJO](https://imgcdn.dev/i/cuplikan-layar-2026-01-17-225704.Y1QtJO)
